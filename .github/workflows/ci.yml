@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      # Loads the built package in a consumer's import order, which is the only way an ESM import
+      # cycle behind the JSX subpath shows up.
+      - run: npm run smoke
+      # The end-to-end suite is not run here: it publishes to a real Connect instance. Run it
+      # locally against a sandbox with CONNECT_E2E_INSTANCE_ID before releasing an action change.
+      - run: npm run test:e2e   # skips without CONNECT_E2E_INSTANCE_ID; proves the suite still loads

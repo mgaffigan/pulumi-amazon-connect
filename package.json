@@ -1,0 +1,48 @@
+{
+  "name": "pulumi-amazon-connect",
+  "version": "0.1.0",
+  "description": "Author Amazon Connect contact flows as composable TypeScript, deployed with Pulumi.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./testing": "./dist/testing/index.js",
+    "./jsx-runtime": "./dist/view/jsx-runtime.js",
+    "./jsx-dev-runtime": "./dist/view/jsx-dev-runtime.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p examples/tsconfig.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:rebaseline": "vitest run -u",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "e2e:sweep": "node scripts/sweep-e2e.mjs",
+    "smoke": "node scripts/smoke-package.mjs"
+  },
+  "peerDependencies": {
+    "@pulumi/aws": ">=6.0.0",
+    "@pulumi/aws-native": ">=1.0.0",
+    "@pulumi/pulumi": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-connect": "^3.1107.0",
+    "@biomejs/biome": "^2.5.7",
+    "@pulumi/aws": "^7.41.0",
+    "@pulumi/aws-native": "^1.74.1",
+    "@pulumi/pulumi": "^3.256.0",
+    "@types/node": "^26.2.0",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

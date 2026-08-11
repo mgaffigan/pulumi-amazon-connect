@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    // The examples consume the package by its public name, exactly as a real consumer would, so
+    // the barrel and its exported types are exercised rather than deep paths into src.
+    "baseUrl": ".",
+    "paths": {
+      "pulumi-amazon-connect": ["../src/index.ts"],
+      "@example/connect-patterns": ["./patterns/index.ts"]
+    }
+  },
+  "include": ["ivr", "patterns"]
+}

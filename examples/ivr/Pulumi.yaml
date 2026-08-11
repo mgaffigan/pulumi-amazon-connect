@@ -1,0 +1,13 @@
+name: connect-ivr-example
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+description: A small Amazon Connect IVR authored in TypeScript.
+config:
+  connect-ivr-example:instanceId:
+    description: The Amazon Connect instance id.
+  connect-ivr-example:vipQueueArn:
+    description: Queue for gold-tier callers.
+  connect-ivr-example:mainQueueArn:
+    description: Default queue.

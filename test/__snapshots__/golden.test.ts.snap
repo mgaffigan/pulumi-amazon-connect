@@ -1,0 +1,560 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`golden flow > emits stable JSON for a realistic IVR 1`] = `
+{
+  "Actions": [
+    {
+      "Identifier": "greeting-if-firstName",
+      "Parameters": {
+        "ComparisonValue": "$.Attributes.firstName",
+      },
+      "Transitions": {
+        "Conditions": [
+          {
+            "Condition": {
+              "Operands": [
+                "none",
+              ],
+              "Operator": "Equals",
+            },
+            "NextAction": "greeting-play",
+          },
+        ],
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingCondition",
+            "NextAction": "greeting-play-2",
+          },
+        ],
+        "NextAction": "greeting-play-2",
+      },
+      "Type": "Compare",
+    },
+    {
+      "Identifier": "greeting-play-2",
+      "Parameters": {
+        "Text": "Welcome back, $.Attributes.firstName.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play",
+          },
+        ],
+        "NextAction": "set-attributes",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "greeting-play",
+      "Parameters": {
+        "Text": "Thanks for calling.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play",
+          },
+        ],
+        "NextAction": "set-attributes",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "set-attributes",
+      "Parameters": {
+        "Attributes": {
+          "phone": "$.CustomerEndpoint.Address",
+          "tier": "$.External.tier",
+        },
+        "TargetContact": "Current",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "if-tier",
+      },
+      "Type": "UpdateContactAttributes",
+    },
+    {
+      "Identifier": "if-tier",
+      "Parameters": {
+        "ComparisonValue": "$.External.tier",
+      },
+      "Transitions": {
+        "Conditions": [
+          {
+            "Condition": {
+              "Operands": [
+                "gold",
+              ],
+              "Operator": "Equals",
+            },
+            "NextAction": "play",
+          },
+        ],
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingCondition",
+            "NextAction": "get-digit",
+          },
+        ],
+        "NextAction": "get-digit",
+      },
+      "Type": "Compare",
+    },
+    {
+      "Identifier": "get-digit",
+      "Parameters": {
+        "InputTimeLimitSeconds": "5",
+        "StoreInput": "False",
+        "Text": "Press 1 to hold, or 2 to request a call back.",
+      },
+      "Transitions": {
+        "Conditions": [
+          {
+            "Condition": {
+              "Operands": [
+                "1",
+              ],
+              "Operator": "Equals",
+            },
+            "NextAction": "set-queue-2",
+          },
+          {
+            "Condition": {
+              "Operands": [
+                "2",
+              ],
+              "Operator": "Equals",
+            },
+            "NextAction": "set-attributes-2",
+          },
+        ],
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+          {
+            "ErrorType": "NoMatchingCondition",
+            "NextAction": "flow-end",
+          },
+          {
+            "ErrorType": "InputTimeLimitExceeded",
+            "NextAction": "wait",
+          },
+        ],
+        "NextAction": "flow-end",
+      },
+      "Type": "GetParticipantInput",
+    },
+    {
+      "Identifier": "wait",
+      "Parameters": {
+        "TimeLimitSeconds": "2",
+      },
+      "Transitions": {
+        "Conditions": [
+          {
+            "Condition": {
+              "Operands": [
+                "WaitCompleted",
+              ],
+              "Operator": "Equals",
+            },
+            "NextAction": "set-queue-3",
+          },
+        ],
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "set-queue-3",
+      },
+      "Type": "Wait",
+    },
+    {
+      "Identifier": "set-queue-3",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:123456789012:queue/main",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "transfer-to-queue-3",
+      },
+      "Type": "UpdateContactTargetQueue",
+    },
+    {
+      "Identifier": "transfer-to-queue-3",
+      "Parameters": {},
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+          {
+            "ErrorType": "QueueAtCapacity",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "flow-end",
+      },
+      "Type": "TransferContactToQueue",
+    },
+    {
+      "Identifier": "set-attributes-2",
+      "Parameters": {
+        "Attributes": {
+          "callbackRequested": "true",
+        },
+        "TargetContact": "Current",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "play-2",
+      },
+      "Type": "UpdateContactAttributes",
+    },
+    {
+      "Identifier": "play-2",
+      "Parameters": {
+        "Text": "We'll call you back shortly.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "disconnect",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "disconnect",
+      "Parameters": {},
+      "Transitions": {},
+      "Type": "DisconnectParticipant",
+    },
+    {
+      "Identifier": "set-queue-2",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:123456789012:queue/main",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "transfer-to-queue-2",
+      },
+      "Type": "UpdateContactTargetQueue",
+    },
+    {
+      "Identifier": "transfer-to-queue-2",
+      "Parameters": {},
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+          {
+            "ErrorType": "QueueAtCapacity",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "flow-end",
+      },
+      "Type": "TransferContactToQueue",
+    },
+    {
+      "Identifier": "play",
+      "Parameters": {
+        "Text": "Connecting you to your dedicated team.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "set-queue",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "set-queue",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:123456789012:queue/vip",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "transfer-to-queue",
+      },
+      "Type": "UpdateContactTargetQueue",
+    },
+    {
+      "Identifier": "transfer-to-queue",
+      "Parameters": {},
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play-2",
+          },
+          {
+            "ErrorType": "QueueAtCapacity",
+            "NextAction": "apology-play-2",
+          },
+        ],
+        "NextAction": "flow-end",
+      },
+      "Type": "TransferContactToQueue",
+    },
+    {
+      "Identifier": "apology-play-2",
+      "Parameters": {
+        "Text": "Sorry, we're having trouble right now.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "apology-play",
+          },
+        ],
+        "NextAction": "apology-disconnect-2",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "apology-disconnect-2",
+      "Parameters": {},
+      "Transitions": {},
+      "Type": "DisconnectParticipant",
+    },
+    {
+      "Identifier": "apology-play",
+      "Parameters": {
+        "Text": "Sorry, we're having trouble right now.",
+      },
+      "Transitions": {
+        "Errors": [
+          {
+            "ErrorType": "NoMatchingError",
+            "NextAction": "flow-end",
+          },
+        ],
+        "NextAction": "apology-disconnect",
+      },
+      "Type": "MessageParticipant",
+    },
+    {
+      "Identifier": "flow-end",
+      "Parameters": {},
+      "Transitions": {},
+      "Type": "DisconnectParticipant",
+    },
+    {
+      "Identifier": "apology-disconnect",
+      "Parameters": {},
+      "Transitions": {},
+      "Type": "DisconnectParticipant",
+    },
+  ],
+  "Metadata": {
+    "ActionMetadata": {
+      "apology-disconnect": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 5400,
+          "y": 350,
+        },
+      },
+      "apology-disconnect-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 4650,
+          "y": 350,
+        },
+      },
+      "apology-play": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 4900,
+          "y": 350,
+        },
+      },
+      "apology-play-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 4400,
+          "y": 350,
+        },
+      },
+      "disconnect": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 2900,
+          "y": 700,
+        },
+      },
+      "flow-end": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 5150,
+          "y": 700,
+        },
+      },
+      "get-digit": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 1400,
+          "y": 350,
+        },
+      },
+      "greeting-if-firstName": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 150,
+          "y": 0,
+        },
+      },
+      "greeting-play": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 650,
+          "y": 350,
+        },
+      },
+      "greeting-play-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 400,
+          "y": 350,
+        },
+      },
+      "if-tier": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 1150,
+          "y": 0,
+        },
+      },
+      "play": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 3650,
+          "y": 350,
+        },
+      },
+      "play-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 2650,
+          "y": 700,
+        },
+      },
+      "set-attributes": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 900,
+          "y": 0,
+        },
+      },
+      "set-attributes-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 2400,
+          "y": 700,
+        },
+      },
+      "set-queue": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 3900,
+          "y": 350,
+        },
+      },
+      "set-queue-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 3150,
+          "y": 700,
+        },
+      },
+      "set-queue-3": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 1900,
+          "y": 700,
+        },
+      },
+      "transfer-to-queue": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 4150,
+          "y": 350,
+        },
+      },
+      "transfer-to-queue-2": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 3400,
+          "y": 700,
+        },
+      },
+      "transfer-to-queue-3": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 2150,
+          "y": 700,
+        },
+      },
+      "wait": {
+        "isFriendlyName": true,
+        "position": {
+          "x": 1650,
+          "y": 700,
+        },
+      },
+    },
+    "entryPointPosition": {
+      "x": 20,
+      "y": 20,
+    },
+  },
+  "StartAction": "greeting-if-firstName",
+  "Version": "2019-10-30",
+}
+`;

@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+
+    "jsx": "react-jsx",
+    // Tests and examples reference the library by its published name, which is also what a consumer
+    // writes in `jsxImportSource`.
+    "baseUrl": ".",
+    "paths": {
+      "pulumi-amazon-connect": ["./src/index.ts"],
+      "pulumi-amazon-connect/jsx-runtime": ["./src/view/jsx-runtime.ts"],
+      "pulumi-amazon-connect/jsx-dev-runtime": ["./src/view/jsx-dev-runtime.ts"]
+    },
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "test"]
+}
